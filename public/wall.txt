@@ -1,0 +1,285 @@
+import React from "react";
+import { IntroStage } from "../components/IntroStage.jsx";
+export function IntroPage() {
+  return <IntroStage />;
+}
+import React, { useEffect, useRef } from "react";
+import { PortfolioProvider, usePortfolio } from "../context/PortfolioContext.jsx";
+import { FrameHeader } from "../components/FrameHeader.jsx";
+import { EditorShell } from "../components/EditorShell.jsx";
+import { StatusBar } from "../components/StatusBar.jsx";
+import { identity } from "../config/portfolio.js";
+import { mountEditor } from "../engines/editorEngine.js";
+function EditorWorkspace() {
+  const { data, drawerOpen, setDrawerOpen, wormOn, setWormOn } = usePortfolio();
+  const stageRef = useRef(null);
+  const controllerRef = useRef(null);
+  useEffect(() => {
+    if (!data || !stageRef.current) return undefined;
+    const ctrl = mountEditor({
+      root: stageRef.current,
+      data,
+      identity,
+      initialWormOn: wormOn,
+      onDrawerChange: (open) => setDrawerOpen(open),
+    });
+    controllerRef.current = ctrl;
+    return () => {
+      ctrl.destroy();
+      controllerRef.current = null;
+    };
+  }, [data]);
+  const handleToggleDrawer = () => {
+    setDrawerOpen((prev) => {
+      const next = !prev;
+      controllerRef.current?.syncDrawer(next);
+      return next;
+    });
+  };
+  const handleToggleWorm = () => {
+    const next = !wormOn;
+    setWormOn(next);
+    controllerRef.current?.setWorm(next);
+  };
+  return (
+    <>
+      <main className="stage" ref={stageRef}>
+        <FrameHeader brandTip="back to the intro" />
+        <h1 className="sr-only">{identity.domain} — experience, education, achievements, tools and themes.</h1>
+        <EditorShell drawerOpen={drawerOpen} onToggleDrawer={handleToggleDrawer} />
+        <StatusBar wormOn={wormOn} onToggleWorm={handleToggleWorm} />
+        <div className="desk" aria-hidden="true" />
+      </main>
+      <canvas className="overlay" aria-hidden="true" />
+    </>
+  );
+}
+export function EditorPage() {
+  return (
+    <PortfolioProvider>
+      <EditorWorkspace />
+    </PortfolioProvider>
+  );
+}
+import React, { createContext, useContext, useEffect, useState, useCallback } from "react";
+import { wormStorageKey } from "../config/portfolio.js";
+const PortfolioContext = createContext(null);
+const loadJson = (url) =>
+  fetch(url).then((response) => {
+    if (!response.ok) throw new Error(`${url}: ${response.status}`);
+    return response.json();
+  });
+export function PortfolioProvider({ children }) {
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [wormOn, setWormOn] = useState(() => {
+    try {
+      return localStorage.getItem(wormStorageKey) === "on";
+    } catch {
+      return false;
+    }
+  });
+  useEffect(() => {
+    const controller = new AbortController();
+    let active = true;
+    Promise.all([
+      loadJson("/site/content.json"),
+      loadJson("/themes.json"),
+      loadJson("/site/stack.json").catch(() => null),
+    ])
+      .then(([content, themeData, stack]) => {
+        if (!active) return;
+        setData({ content, themeData, stack });
+      })
+      .catch((err) => {
+        if (!active || controller.signal.aborted) return;
+        setError(err);
+      });
+    return () => {
+      active = false;
+      controller.abort();
+    };
+  }, []);
+  const persistWorm = useCallback((next) => {
+    setWormOn(next);
+    try {
+      if (next) localStorage.setItem(wormStorageKey, "on");
+      else localStorage.removeItem(wormStorageKey);
+    } catch {}
+  }, []);
+  return (
+    <PortfolioContext.Provider
+      value={{
+        data,
+        error,
+        drawerOpen,
+        setDrawerOpen,
+        wormOn,
+        setWormOn: persistWorm,
+      }}
+    >
+      {children}
+    </PortfolioContext.Provider>
+  );
+}
+export function usePortfolio() {
+  const ctx = useContext(PortfolioContext);
+  if (!ctx) throw new Error("usePortfolio must be used inside PortfolioProvider");
+  return ctx;
+import React from "react";
+import { BrandMark } from "./BrandMark.jsx";
+import { identity, githubUrl } from "../config/portfolio.js";
+export function FrameHeader({ brandTip }) {
+  return (
+    <header className="frame-top">
+      <a className="brand" href="/" data-tip={brandTip || undefined}>
+        <BrandMark />
+        <span>{identity.domain}</span>
+      </a>
+      <nav className="switch is-solo" aria-label="Elsewhere">
+        <a href={githubUrl} rel="me">
+          github
+        </a>
+      </nav>
+    </header>
+  );
+}
+import React from "react";
+export function EditorShell({ drawerOpen, onToggleDrawer }) {
+  return (
+    <section
+      className={drawerOpen ? "editor is-tree-open" : "editor"}
+      aria-label="Editor"
+    >
+      <button
+        className="tabline"
+        type="button"
+        aria-expanded={drawerOpen}
+        aria-controls="tree"
+        onClick={onToggleDrawer}
+      >
+        <span className="tab-dir">~/Portfolio</span>
+        <span className="tab-file" />
+        <span className="tab-toggle" aria-hidden="true">
+          {drawerOpen ? "↑" : "↓"}
+        </span>
+      </button>
+      <nav className="wheel" id="tree" aria-label="Portfolio sections and themes" />
+      <div className="pane">
+        <p className="winbar" />
+        <div className="buffer" tabIndex={0} aria-live="polite" />
+        <div className="eye-host" aria-hidden="true" />
+      </div>
+    </section>
+  );
+}
+import React from "react";
+import { identity } from "../config/portfolio.js";
+export function StatusBar({ wormOn, onToggleWorm }) {
+  return (
+    <div className="bar">
+      <p className="bar-id" aria-hidden="true">
+        <span className="bar-title">{identity.barTitle || identity.name.toUpperCase()}</span>
+        <span className="bar-sub">
+          <span className="cmd" />
+          <span className="hunt" />
+          <span className="keys" />
+        </span>
+      </p>
+      <div className="bar-cols" aria-hidden="true" />
+      <div className="bar-state" aria-hidden="true">
+        <p className="col">
+          <span className="label">WORM</span>
+          <span className="value" data-k="worm">
+            lurking
+          </span>
+        </p>
+        <p className="col">
+          <span className="label">EYE</span>
+          <span className="value" data-k="eye">
+            closed
+          </span>
+        </p>
+        <p className="col">
+          <span className="label">GHOST</span>
+          <span className="value" data-k="ghost">
+            idle
+          </span>
+        </p>
+      </div>
+      <button
+        className="den"
+        type="button"
+        aria-label="worm"
+        aria-pressed={wormOn}
+        data-tip={wormOn ? "switch the worm off" : "wake the worm"}
+        onClick={onToggleWorm}
+      />
+      <p className="bar-graph" aria-hidden="true">
+        <span className="label span">VISITORS</span>
+        <span className="value end" />
+        <canvas />
+      </p>
+    </div>
+  );
+}
+import React, { useEffect } from "react";
+import { FrameHeader } from "./FrameHeader.jsx";
+import { identity } from "../config/portfolio.js";
+import { mountGlimpse } from "../engines/glimpseEngine.js";
+export function IntroStage() {
+  useEffect(() => {
+    const destroy = mountGlimpse({ tagline: identity.tagline });
+    return () => {
+      destroy?.();
+    };
+  }, []);
+  return (
+    <main className="stage">
+      <FrameHeader />
+      <h1 className="sr-only">
+        {identity.domain} — {identity.tagline}
+      </h1>
+      <canvas className="wall" aria-hidden="true" />
+      <div className="glass kb-glass" aria-hidden="true" />
+      <canvas className="machine" aria-hidden="true" />
+      <canvas className="tile" aria-hidden="true" />
+      <p className="status" aria-hidden="true">
+        <span className="mode">NORMAL</span>
+        <span className="path" />
+        <span className="pos" />
+      </p>
+      <p className="cmdline" aria-hidden="true">
+        <span className="cmd" />
+        <span className="showcmd" />
+      </p>
+      <p className="status pane-status" aria-hidden="true">
+        <span className="mode">NORMAL</span>
+        <span className="path" />
+        <span className="pos" />
+      </p>
+      <p className="cmdline pane-cmd" aria-hidden="true">
+        <span className="cmd" />
+        <span className="showcmd" />
+      </p>
+      <a className="enter" href="/site/" aria-label="Enter">
+        enter ↩
+      </a>
+      <button className="theme-key" type="button" aria-label="Change theme">
+        <span className="command-glyph" aria-hidden="true" />
+        :theme
+      </button>
+      <p className="note" aria-hidden="true">
+        // {identity.tagline}
+      </p>
+      <nav className="sources sr-only" aria-label="Code shown on this page" />
+    </main>
+  );
+}
+import portfolioConfig from "../../portfolio.config.json";
+export const config = portfolioConfig;
+export const identity = portfolioConfig.identity;
+export const githubUrl = `https://github.com/${encodeURIComponent(identity.github)}`;
+export const themeStorageKey = `${identity.storagePrefix || "portfolio"}.scheme`;
+export const wormStorageKey = `${identity.storagePrefix || "portfolio"}.worm`;

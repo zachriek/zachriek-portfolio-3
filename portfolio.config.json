@@ -1,0 +1,194 @@
+{
+  "identity": {
+    "name": "Zachrie Kurniawan",
+    "barTitle": "ZACHRIE KURNIAWAN",
+    "terminalUser": "zachriek",
+    "domain": "zachriek.vercel.app",
+    "tagline": "web developer & tech enthusiast.",
+    "github": "zachriek",
+    "storagePrefix": "zachriek"
+  },
+  "about": {
+    "role": "Web Developer & Tech Enthusiast",
+    "bio": "An ordinary person with an extraordinary passion for technology, especially in building intuitive and functional web applications.",
+    "extra": "Bandar Lampung, Indonesia · Informatics Engineering · University of Lampung"
+  },
+  "links": [
+    {
+      "label": "Email",
+      "url": "mailto:zachrie2005@gmail.com"
+    },
+    {
+      "label": "GitHub",
+      "url": "https://github.com/zachriek"
+    },
+    {
+      "label": "LinkedIn",
+      "url": "https://www.linkedin.com/in/zachriek"
+    },
+    {
+      "label": "Portfolio",
+      "url": "https://zachriek.vercel.app"
+    }
+  ],
+  "work": [
+    {
+      "when": "01/2024 – 02/2024",
+      "title": "Frontend Intern",
+      "org": "Core Initiative Studio x Rakamin",
+      "where": "Remote",
+      "desc": "Built a responsive e-commerce UI using Vue.js, focusing on intuitive product listing, clean layouts with thoughtful visual elements, and improved user navigation."
+    },
+    {
+      "when": "11/2023 – 12/2023",
+      "title": "Fullstack Intern",
+      "org": "Qwords Cloud Web Hosting",
+      "where": "Remote",
+      "desc": "Optimized website frontend using HTML5, CSS, and JavaScript for responsive design, redesigned the Qwords website using Laravel, and contributed to planning and shipping new features."
+    }
+  ],
+  "educations": [
+    {
+      "when": "08/2023 – present",
+      "school": "University of Lampung",
+      "degree": "Bachelor's degree, Informatics Engineering",
+      "where": "Bandar Lampung, ID"
+    },
+    {
+      "when": "07/2020 – 07/2023",
+      "school": "SMK Negeri 1 Bandar Lampung",
+      "degree": "Multimedia",
+      "where": "Bandar Lampung, ID"
+    }
+  ],
+  "achievements": [
+    {
+      "name": "Junior Web Developer Certification",
+      "issuer": "Badan Nasional Sertifikasi Profesi (BNSP)",
+      "when": "2023",
+      "place": "Bandar Lampung, Indonesia",
+      "desc": "National competency certification for Junior Web Developer issued by Badan Nasional Sertifikasi Profesi (BNSP)."
+    },
+    {
+      "name": "1st Place ITC-TI 2023 Software Engineering",
+      "issuer": "Institut Informatika dan Bisnis Darmajaya",
+      "when": "2023",
+      "place": "Bandar Lampung, Indonesia",
+      "desc": "1st Place winner in IT Competition Teknik Informatika (ITC-TI) 2023 Software Engineering category."
+    },
+    {
+      "name": "4th Place / Medallion for Excellence LKS Web Technologies National",
+      "issuer": "Pusat Prestasi Nasional",
+      "when": "2022",
+      "place": "Indonesia",
+      "desc": "Awarded 4th Place and Medallion for Excellence in Web Technologies at the National LKS competition."
+    },
+    {
+      "name": "Gold Medalist National Science Olympiad Mathematics",
+      "issuer": "Prestasi Maju Indonesia",
+      "when": "2022",
+      "place": "Indonesia",
+      "desc": "Gold Medalist in the National Science Olympiad (Mathematics) organized by Prestasi Maju Indonesia."
+    }
+  ],
+  "securityTools": [
+    {
+      "name": "Burp Suite",
+      "category": "Web Application Security",
+      "badge": "Proxy & Scanner",
+      "desc": "Intercepting proxy, vulnerability scanner, repeater, and automated fuzzing for OWASP Top 10 web testing."
+    },
+    {
+      "name": "Nmap",
+      "category": "Network Reconnaissance",
+      "badge": "Port Scanner",
+      "desc": "Host discovery, TCP/UDP port scanning, service version detection, OS fingerprinting, and NSE scripting."
+    },
+    {
+      "name": "Metasploit Framework",
+      "category": "Exploitation Framework",
+      "badge": "Exploitation",
+      "desc": "Modular penetration testing framework with verified exploit modules, auxiliary scanners, and Meterpreter payloads."
+    },
+    {
+      "name": "Wireshark",
+      "category": "Packet Analysis & Forensics",
+      "badge": "Packet Sniffer",
+      "desc": "Real-time network protocol analyzer with deep packet inspection, display filters, and TCP/TLS stream reassembly."
+    },
+    {
+      "name": "SQLMap",
+      "category": "Database Pentest",
+      "badge": "SQL Injection",
+      "desc": "Automated SQL injection detection and database enumeration across MySQL, PostgreSQL, MSSQL, and SQLite."
+    },
+    {
+      "name": "John the Ripper",
+      "category": "Password Security",
+      "badge": "Hash Cracker",
+      "desc": "Password strength auditing and cryptographic hash analysis with wordlist, rule-based, and mask modes."
+    },
+    {
+      "name": "OWASP ZAP",
+      "category": "Web Application Security",
+      "badge": "DAST Scanner",
+      "desc": "Open-source active/passive web vulnerability scanner with AJAX spidering and CI/CD integration."
+    },
+    {
+      "name": "Aircrack-ng",
+      "category": "Wireless Pentest",
+      "badge": "WiFi Security",
+      "desc": "802.11 wireless assessment suite covering monitor mode, packet capture, and WPA/WPA2 handshake analysis."
+    },
+    {
+      "name": "THC Hydra",
+      "category": "Credential Assessment",
+      "badge": "Brute-Forcer",
+      "desc": "Parallelized network login auditing supporting SSH, HTTP/HTTPS, FTP, SMB, and database protocols."
+    },
+    {
+      "name": "Gobuster",
+      "category": "Web & DNS Enumeration",
+      "badge": "Directory Buster",
+      "desc": "Fast Go-based directory, file, vhost, and DNS subdomain brute-forcing for web discovery."
+    }
+  ],
+  "skills": {
+    "languages": [
+      { "name": "JavaScript", "level": 0.92, "focus": "frontend & fullstack" },
+      { "name": "TypeScript", "level": 0.88, "focus": "typed web apps" },
+      { "name": "PHP", "level": 0.80, "focus": "Laravel & web backends" },
+      { "name": "HTML5", "level": 0.94, "focus": "semantic web markup" },
+      { "name": "CSS3", "level": 0.90, "focus": "responsive UI & motion" },
+      { "name": "Python", "level": 0.72, "focus": "scripting & security" }
+    ],
+    "tools": [
+      { "name": "React", "note": "UI" },
+      { "name": "Vue", "note": "UI" },
+      { "name": "Laravel", "note": "Backend" },
+      { "name": "Next.js", "note": "Fullstack" },
+      { "name": "Node.js", "note": "Runtime" },
+      { "name": "Tailwind CSS", "note": "Styling" },
+      { "name": "PostgreSQL", "note": "DB" },
+      { "name": "MySQL", "note": "DB" },
+      { "name": "Linux", "note": "OS" },
+      { "name": "Git", "note": "VCS" },
+      { "name": "Vite", "note": "Build" },
+      { "name": "Docker", "note": "Ops" }
+    ]
+  },
+  "siteStack": [
+    {
+      "name": "React",
+      "via": "React 19 component UI & state"
+    },
+    {
+      "name": "Vite",
+      "via": "multi-page React bundler & HMR"
+    },
+    {
+      "name": "Canvas 2D",
+      "via": "code wall, wheel & blueprint ink"
+    }
+  ]
+}
